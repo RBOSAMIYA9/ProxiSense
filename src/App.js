@@ -1,41 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Home from './components/Home'
+import Dashboard from './components/Dashboard'
+import Login from './components/Login'
 import {
   ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
+  extendTheme 
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+
+
+const appTheme = extendTheme({
+  fonts: {
+    heading: "Playfair display",
+    body: "Lato",
+  },
+})
+
 
 function App() {
+  // const [loggedIn, setLoggedIn] = useState(false);
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
-    </ChakraProvider>
+    <Router>
+      <ChakraProvider theme={appTheme}>
+
+
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+
+          <Route exact path="/dashboard" >
+            <Dashboard user={user} setUser={setUser} />
+
+          </Route>
+          <Route exact path="/login">
+            <Login setUser={setUser} />
+          </Route>
+
+        </Switch>
+      </ChakraProvider>
+    </Router>
   );
 }
 

@@ -1,68 +1,82 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ProxiSense
+A proximity based smart attendence system.
 
-## Available Scripts
+## Problem 
+Now a days in every office and workplace fingureprint based attendence system and face detection based attendence system is used, the biggest drawback of such systems is employees  roam outside the workplace after punching in the fingureprint / face detection system.
 
-In the project directory, you can run:
+Cumulatively  such small  unusual breaks leads to large
+loss of working hours of a company. 
 
-### `npm start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Working concept
+Proxisense is a complete solution which works on concept of Bluetooth Low energy (BLE) advertising.
+<br/>
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+<img src="src/indoorTracking.jpeg" alt="working-concept"/>
 
-### `npm test`
+## Modules
+1. Hardware <br/>
+ProxiSense hardware is a device responsible for scanning nearby BLE advertisement packects and sending data to the webapp via MQTT.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Mobile app <br/>
+Currently we have made mobile app which works on android platform and which creates BLE advertisement which further scanned by ProxiSense hardware.
 
-### `npm run build`
+3. Web app <br/>
+ProxiSense web app is main dashboard where administrator can add update delete the user and can also view employees present in primises in realtime.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Tech 
+- Hardware <br/>
+ESP32, MQTT 
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- Mobile app <br/>
+BLE advertisement
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Web app <br/>
+Reactjs , firebase, heroku (for api)
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ ## Benifits
+ - Time saved - money saved
+ - Increased productivity of employees
+ - Reduces error in payroll
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Web app Features 
+-  Audio notification when employees enter or leave premises
+- Add / update / delete employees 
+- update employee photo (selection based)
+- Responsive design 
+- Dark mode
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## ScreenShots
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<img src="screenshots/fullPage.png" alt="homepage"/>
+<p align="center">Homepage</p>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+<img src="screenshots/login.png" alt="login"/>
+<p align="center">Login page</p>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
+<img src="screenshots/dashboard.png" alt="dashboard"/>
+<p align="center">Dashboard</p>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+<img src="screenshots/employees.png" alt="employees"/>
+<p align="center">View all employees</p>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+<img src="screenshots/viewEmployeeDetails.png" alt="viewEmployeeDetails"/>
+<p align="center">viewEmployeeDetails</p>
 
-### Advanced Configuration
+<img src="screenshots/editEmployeePhoto.png" alt="editEmployeePhoto"/>
+<p align="center">editEmployeePhoto</p>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+<img src="screenshots/createEmployee.png" alt="createEmployee"/>
+<p align="center">createEmployee</p>
 
-### Deployment
+<img src="screenshots/dashboardDarkMode.png" alt="dashboardDarkMode"/>
+<p align="center">Dashboard in dark Mode</p>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+<img src="screenshots/responsiveDashboarMobile.png" alt="responsiveDashboarMobile"/>
+<p align="center"> Dashboard in mobile view </p>

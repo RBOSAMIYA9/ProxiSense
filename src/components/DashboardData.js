@@ -5,10 +5,10 @@ import {
     Text, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Image
 } from '@chakra-ui/react';
 import { projectFirestore } from '../firebase/firebaseConfig'
-import { MdUpdate } from 'react-icons/md'
+// import { MdUpdate } from 'react-icons/md'
 import { GoPrimitiveDot } from 'react-icons/go'
-import * as moment from 'moment';
-// import sound from './entered.wav'
+// import * as moment from 'moment';
+// import { updatePresentEmployees, getPresentEmployeeData } from '../firebase/dbOperations'
 
 function DashboardData({ mqttMessage, mqttStatus }) {
 
@@ -24,17 +24,27 @@ function DashboardData({ mqttMessage, mqttStatus }) {
 
     const [presentList, setPresentList] = useState([]);
     const [absentList, setAbsentlist] = useState([]);
-    const [updatedTimestamp, setUpdateTimestamp] = useState("");
-    const [difference, setDifference] = useState({});
+    // const [updatedTimestamp, setUpdateTimestamp] = useState("");
+    // const [difference, setDifference] = useState({});
 
     const toast = useToast()
-    // localStorage.setItem('user', JSON.stringify({ userName: "ravindra" }))
-    // JSON.parse(localStorage.getItem('user'))
+
+    // 99041 88303 vijay bhai
+
+    function isJson(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
 
     useEffect(() => {
-        // console.log(" if no pela in useEffect", mqttMessage)
-        if (mqttMessage) {
-
+        console.log(" if no pela in useEffect", mqttMessage, "is json", isJson(JSON.stringify(mqttMessage)))
+        if (isJson(JSON.stringify(mqttMessage))) {
+            console.log(" is json ", mqttMessage)
 
             var mqttMessageArray = [...new Set(mqttMessage["devices"])]
             // mqttMessage = [...new Set(mqttMessage["devices"])]
@@ -60,48 +70,50 @@ function DashboardData({ mqttMessage, mqttStatus }) {
 
             //calc absents
             var absentees = employeeList.filter(x => present.indexOf(x) === -1);
-            // console.log("absents in useEffect", absentees);
             setAbsentlist(absentees);
             setAbsentTotal(absentees.length);
-            var CurrentDate = moment(new Date());
+            // var CurrentDate = moment(new Date());
             // setDifference(CurrentDate.diff(updatedTimestamp, 'seconds'))
             // console.log("current time", CurrentDate)
-            var timeUpdate;
-            if (CurrentDate.diff(updatedTimestamp, 'minutes') > 60) {
-                timeUpdate = {
-                    "time": "hours",
-                    "differenceTime": CurrentDate.diff(updatedTimestamp, 'hours')
-                };
-                setDifference(timeUpdate)
-                // console.log("in hours", CurrentDate.diff(updatedTimestamp, 'minutes'))
-            }
+            // var timeUpdate;
+            // if (CurrentDate.diff(updatedTimestamp, 'minutes') > 60) {
+            //     timeUpdate = {
+            //         "time": "hours",
+            //         "differenceTime": CurrentDate.diff(updatedTimestamp, 'hours')
+            //     };
+            //     setDifference(timeUpdate)
+            //     // console.log("in hours", CurrentDate.diff(updatedTimestamp, 'minutes'))
+            // }
 
 
-            else {
-                // console.log("in seconds", CurrentDate.diff(updatedTimestamp, 'seconds'))
-                timeUpdate = {
-                    "time": "minutes",
-                    "differenceTime": CurrentDate.diff(updatedTimestamp, 'minutes')
-                }
-                setDifference(timeUpdate);
-            }
-            setUpdateTimestamp(CurrentDate)
+            // else {
+            //     // console.log("in seconds", CurrentDate.diff(updatedTimestamp, 'seconds'))
+            //     timeUpdate = {
+            //         "time": "minutes",
+            //         "differenceTime": CurrentDate.diff(updatedTimestamp, 'minutes')
+            //     }
+            //     setDifference(timeUpdate);
+            // }
+            // setUpdateTimestamp(CurrentDate)
             const audioEl = document.getElementsByClassName("audio-element")[0]
             audioEl.play()
 
 
-            var tempData =
-            {
-                "presentEmployees": present,
-                "presentTotal": totalPresent,
-                "absentEmployees": absentees,
-                "absentTotal": absentees.length,
-                "updateTime": timeUpdate
-            }
+            // var tempData =
+            // {
+            //     "presentEmployees": present,
+            //     "presentTotal": totalPresent,
+            //     "absentEmployees": absentees,
+            //     "absentTotal": absentees.length,
+            //     "updateTime": timeUpdate
+            // }
 
-            localStorage.setItem('data', JSON.stringify(tempData))
-            // console.log("temp:",JSON.parse(tempData));
 
+            // updatePresentEmployees(tempData).then(() => {
+            //     console.log("data updated successfully")
+            // }).catch((e) => {
+            //     console.log("error", e);
+            // })
 
         }
 
@@ -110,13 +122,13 @@ function DashboardData({ mqttMessage, mqttStatus }) {
     }, [mqttMessage])
 
     useEffect(() => {
-        console.log("mqttStatus i vu")
+        // console.log("mqttStatus i vu")
         if (mqttStatus) {
-            // toast({
-            //     title: "MQTT Connected ",
-            //     status: "success",
-            //     isClosable: true,
-            // })
+            toast({
+                title: "MQTT Connected ",
+                status: "success",
+                isClosable: true,
+            })
 
         } else if (!mqttStatus) {
             toast({
@@ -134,6 +146,24 @@ function DashboardData({ mqttMessage, mqttStatus }) {
     useEffect(() => {
         // console.log("localstorrge data",localStorage.getItem('data'));
         setLoading(true);
+
+        fetch('https://sheltered-plains-26987.herokuapp.com/api')
+            // Handle success
+            .then(response => response.json())  // convert to json
+            .then((data) => {
+                // console.log("data",data)
+
+                setPresentTotal(data["presentTotal"]);
+                setAbsentTotal(data["absentTotal"]);
+                setPresentList(data["presentEmployees"]);
+                setAbsentlist(data["absentEmployees"]);
+
+
+            })    //print data to console
+            .catch(err => console.log('Request Failed', err)); // Catch errors
+
+
+
         const collectionRef = projectFirestore.collection("employeeData");
         collectionRef.onSnapshot((snapshot) => {
             var data = snapshot.docs.map((doc) => ({
@@ -145,33 +175,17 @@ function DashboardData({ mqttMessage, mqttStatus }) {
             setTotal(snapshot.docs.length)
             setLoading(false)
 
-            try {
-                var oldData = JSON.parse(localStorage.getItem('data'));
 
-                console.log("old time: ", oldData);
-                setPresentTotal(oldData["presentTotal"]);
-                setAbsentTotal(oldData["absentTotal"]);
-                setPresentList(oldData["presentEmployees"]);
-                setAbsentlist(oldData["absentEmployees"]);
-                setDifference(oldData["updateTime"]);
-
-            }
-            catch (e) {
-
-                // eslint-disable-next-line 
-                var previousData = {
-
-                    "presentEmployees": [],
-                    "presentTotal": 0,
-                    "absentEmployees": [],
-                    "absentTotal": 0,
-                    "updateTime": {
-                        "time": "minutes",
-                        "differenceTime": 0
-                    }
-                }
-            }
-
+            // getPresentEmployeeData().then((oldData) => {
+            //     // console.log("previousData", oldData)
+            //     setPresentTotal(oldData["presentTotal"]);
+            //     setAbsentTotal(oldData["absentTotal"]);
+            //     setPresentList(oldData["presentEmployees"]);
+            //     setAbsentlist(oldData["absentEmployees"]);
+            //     setDifference(oldData["updateTime"]);
+            // }).catch((e) => {
+            //     console.log("error in getPresentEmployeeData", e)
+            // })
 
         })
 
@@ -243,9 +257,9 @@ function DashboardData({ mqttMessage, mqttStatus }) {
                                     <TabPanel>
 
                                         <Box >
-                                            <Center>
+                                            {/* <Center>
                                                 <Box mb="2" d="flex" justifyContent="flex-end" width="60vw" pr="4" alignItems="center"><MdUpdate /><i > &nbsp; updated {difference.differenceTime} {difference.time} ago</i></Box>
-                                            </Center>
+                                            </Center> */}
                                             {presentList && presentList.map((employee) => (
 
                                                 <Box key={Math.random().toString()}>
@@ -269,9 +283,9 @@ function DashboardData({ mqttMessage, mqttStatus }) {
                                     </TabPanel>
                                     <TabPanel>
                                         <Box >
-                                            <Center>
+                                            {/* <Center>
                                                 <Box mb="2" d="flex" justifyContent="flex-end" width="60vw" pr="4" alignItems="center"><MdUpdate /><i > &nbsp; updated {difference.differenceTime} {difference.time} ago</i></Box>
-                                            </Center>
+                                            </Center> */}
 
                                             {absentList && absentList.map((employee) => (
                                                 <Box key={Math.random().toString()}>

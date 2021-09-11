@@ -24,29 +24,6 @@ const addEmployee = (data) => {
 
 }
 
-// const getAllHospitals = () => {
-
-//     return new Promise((resolve, reject) => {
-//         const collectionRef = projectFirestore.collection("hospitalData");
-//         collectionRef.onSnapshot((snapshot) => {
-//             if (snapshot.docs.length > 0) {
-//                 var data = snapshot.docs.map((doc) => (
-//                     {
-//                         id: doc.id,
-//                         data: doc.data()
-//                     }
-//                 ))
-//                 // console.log("data in ", data);
-//                 resolve(data);
-
-//             }
-//             else
-//                 reject("no data found")
-
-//         })
-//     })
-// }
-
 const getEmployeeById = (id) => {
     console.log("id in get employee", id);
     return new Promise((resolve, reject) => {
@@ -61,7 +38,7 @@ const getEmployeeById = (id) => {
                 }
                 // console.log("data in ", employeeData);
                 resolve(employeeData);
-                
+
 
             } else
                 reject("no data found")
@@ -81,6 +58,37 @@ const updateById = (id, data) => {
     })
 }
 
+
+const updatePresentEmployees = (data) => {
+    return new Promise((resolve, reject) => {
+        const collectionRef = projectFirestore.collection("presentEmployees");
+        collectionRef.doc("U3ScJqbJ48gUIeKXnzGv").update({ ...data, updatedAt: timeStamp() }).then(
+            resolve("updated")
+        ).catch((e) => reject("failed to update"))
+    })
+}
+
+const getPresentEmployeeData = () => {
+    return new Promise((resolve, reject) => {
+        const collectionRef = projectFirestore.collection("presentEmployees");
+        collectionRef.doc("U3ScJqbJ48gUIeKXnzGv").get().then((snapshot) => {
+            // console.log("snapshot.docs", snapshot)
+            if (snapshot.exists) {
+                // console.log("snapshot.docs ", snapshot.data())
+                const employeeData = snapshot.data();
+                // console.log("data in ", employeeData);
+                resolve(employeeData);
+
+
+            } else
+                reject("no data found")
+
+        })
+
+    })
+}
+
+
 const deleteEmployeeById = (id) => {
     return new Promise((resolve, reject) => {
         console.log("id in delete", id);
@@ -92,4 +100,4 @@ const deleteEmployeeById = (id) => {
     })
 }
 
-export { addEmployee, getEmployeeById, updateById, deleteEmployeeById }
+export { addEmployee, getEmployeeById, updateById, deleteEmployeeById, updatePresentEmployees, getPresentEmployeeData }

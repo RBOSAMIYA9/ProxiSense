@@ -27,17 +27,19 @@ function Dashboard({ user, setUser }) {
     }
     useEffect(() => {
         console.log("inside use effect");
-        const client = mqtt.connect("ws://broker.emqx.io:8083/mqtt");
+        // const client = mqtt.connect("ws://broker.emqx.io:8083/mqtt");
+        const client = mqtt.connect("wss://test.mosquitto.org:8081");
+        
         client.on('connect', () => {
             setMqttStatus(true);
             // setConnectionStatus(true);
             console.log("connected");
-            client.subscribe('bleStatus')
+            client.subscribe('rajkotCityPoliceBleStatus')
 
         });
         client.on('message', (topic, payload, packet) => {
             console.log("got message  from: ", topic, "message : ", payload.toString());
-            if (topic === 'bleStatus') {
+            if (topic === 'rajkotCityPoliceBleStatus') {
                 // const msgInjson = JSON.parse(payload.toString())
                 // console.log("msgInjson", JSON.parse(payload.toString()));
                 setMessages(JSON.parse(payload.toString()));

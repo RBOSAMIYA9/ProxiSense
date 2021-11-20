@@ -27,9 +27,10 @@ function Dashboard({ user, setUser }) {
     }
     useEffect(() => {
         console.log("inside use effect");
-        const client = mqtt.connect("wss://broker.hivemq.com:8000/mqtt");
-        // const client = mqtt.connect("broker.mqttdashboard.com:8000");
-        // const client = mqtt.connect("ws://test.mosquitto.org:8081");
+        // const client = mqtt.connect("ws://broker.hivemq.com:8000/mqtt");
+        // const client = mqtt.connect("ws://broker.mqttdashboard.com:8000/mqtt");
+        // const client = mqtt.connect("ws://broker.emqx.io:8083/mqtt");
+        const client = mqtt.connect("ws://test.mosquitto.org:8080");
         
         client.on('connect', () => {
             setMqttStatus(true);

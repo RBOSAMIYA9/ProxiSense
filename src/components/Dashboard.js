@@ -31,7 +31,8 @@ function Dashboard({ user, setUser }) {
         // const client = mqtt.connect("ws://broker.hivemq.com:8000");
         // const client = mqtt.connect("ws://broker.mqttdashboard.com:8000/mqtt");
         // const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
-        const client = mqtt.connect("wss://test.mosquitto.org:8081");
+        // const client = mqtt.connect("ws://test.mosquitto.org:8080");
+        const client = mqtt.connect("wss://public:public@public.cloud.shiftr.io");
         
         client.on('connect', () => {
             setMqttStatus(true);

@@ -27,6 +27,7 @@ function Dashboard({ user, setUser }) {
     }
     useEffect(() => {
         console.log("inside use effect");
+        // trying source tree
         // const client = mqtt.connect("ws://broker.hivemq.com:8000");
         // const client = mqtt.connect("ws://broker.mqttdashboard.com:8000/mqtt");
         // const client = mqtt.connect("wss://broker.emqx.io:8084/mqtt");

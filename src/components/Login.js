@@ -9,9 +9,9 @@ import {
     VStack,
     Input,
     useColorMode,
-    Alert,
-    AlertIcon,
-    AlertDescription,
+    // Alert,
+    // AlertIcon,
+    // AlertDescription,
 } from '@chakra-ui/react';
 
 import { useForm } from 'react-hook-form';
@@ -47,6 +47,16 @@ function Login({ user, setUser }) {
     }
     console.log(errors);
 
+    // eslint-disable-next-line 
+    const guestLogin = () => {
+        console.log("login success");
+        localStorage.setItem('user', JSON.stringify({ userName: "ravindra" }))
+
+        setUser({ userName: "ravindra" })
+
+        seterror(false);
+    }
+
     return (
         <>
 
@@ -61,15 +71,16 @@ function Login({ user, setUser }) {
                                 <Input placeholder="Password" type="password" size="lg" mt="6" {...register("password", { required: true })} required />
                                 {error && errorMessage}
                                 <Button mt="6" type="submit" size="lg" width="100%" colorScheme="teal">Login</Button>
+                                <Button mt="6" onClick="guestLogin()" size="lg" width="100%" colorScheme="gray">Guest Login</Button>
 
                             </form>
                         </Box>
-                        <Alert status="info">
+                        {/* <Alert status="info">
                             <AlertIcon />
 
                             <AlertDescription>Use userName: ravindra  password: ravindra to view Demo!</AlertDescription>
-                            
-                        </Alert>
+
+                        </Alert> */}
                     </VStack>
                 </Center>
             </Box>

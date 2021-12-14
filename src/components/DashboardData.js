@@ -95,7 +95,7 @@ function DashboardData({ mqttMessage, mqttStatus }) {
             //     setDifference(timeUpdate);
             // }
             // setUpdateTimestamp(CurrentDate)
-            const audioEl = document.getElementById("audio-element")[0]
+            const audioEl = document.getElementsByClassName("audio-element")[0]
             audioEl.play()
 
 
@@ -204,7 +204,7 @@ function DashboardData({ mqttMessage, mqttStatus }) {
             </Center> : (<>
                 <Box w="100%" >
                     <Box d="none">
-                        <audio id="audio-element">
+                        <audio className="audio-element">
                             <source src={sound}></source>
                         </audio>
                     </Box>

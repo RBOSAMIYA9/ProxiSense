@@ -71,7 +71,7 @@ function Login({ user, setUser }) {
                                 <Input placeholder="Password" type="password" size="lg" mt="6" {...register("password", { required: true })} required />
                                 {error && errorMessage}
                                 <Button mt="6" type="submit" size="lg" width="100%" colorScheme="teal">Login</Button>
-                                <Button mt="6" onClick="guestLogin()" size="lg" width="100%" colorScheme="gray">Guest Login</Button>
+                                <Button mt="6" onClick={guestLogin} size="lg" width="100%" colorScheme="gray">Guest Login</Button>
 
                             </form>
                         </Box>
